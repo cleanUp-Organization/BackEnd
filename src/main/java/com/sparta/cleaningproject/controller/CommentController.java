@@ -18,12 +18,12 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comment/{id}")
-    public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public CommentResponseDto createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return commentService.createComment(id,requestDto,userDetails.getUser());
     }
 
     @PutMapping("/comment/{id}")
-    public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public CommentResponseDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails){
         return commentService.updateComment(id,requestDto,userDetails.getUser());
     }
 }
