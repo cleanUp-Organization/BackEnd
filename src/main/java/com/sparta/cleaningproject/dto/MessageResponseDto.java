@@ -4,11 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class ResponseMsgDto {
+public class MessageResponseDto {
     private String msg;
     private int statusCode;
     @Builder
-    public ResponseMsgDto(String msg, int statusCode) {
+    public MessageResponseDto(String msg, int statusCode) {
         this.msg = msg;
         this.statusCode = statusCode;
     }
