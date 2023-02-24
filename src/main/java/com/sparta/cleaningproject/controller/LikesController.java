@@ -19,4 +19,9 @@ public class LikesController {
     public MessageResponseDto boardLike(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return likesService.boardLike(userDetails.getUser(), boardId);
     }
+
+    @PostMapping("/board/like/{commentId}")
+    public MessageResponseDto commentLike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return likesService.commentLike(userDetails.getUser(), commentId);
+    }
 }
