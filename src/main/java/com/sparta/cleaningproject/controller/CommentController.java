@@ -1,5 +1,7 @@
 package com.sparta.cleaningproject.controller;
 
+import com.sparta.cleaningproject.dto.CommentRequestDto;
+import com.sparta.cleaningproject.dto.CommentResponseDto;
 import com.sparta.cleaningproject.dto.MessageResponseDto;
 import com.sparta.cleaningproject.security.UserDetailsImpl;
 import com.sparta.cleaningproject.service.CommentService;
@@ -19,7 +21,7 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comment/{id}")
-    public ResponseEntity<MessageResponseDto> createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return commentService.createComment(id,requestDto,userDetails.getUser());
     }
 }
