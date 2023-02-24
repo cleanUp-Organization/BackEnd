@@ -6,11 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 //RestController에서 발생한 예와나 에러를 감지하여 Handler로 처리하여  jsson 형식으로 반환
-@ControllerAdvice
+@RestControllerAdvice
 public class CustomExceptionHandler {
     //Vaild를 통한 에러가 발생시 처리
     @ExceptionHandler(MethodArgumentNotValidException.class)
