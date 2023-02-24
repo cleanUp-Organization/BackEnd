@@ -13,6 +13,8 @@ public enum Exception {
     AUTHORIZATION(HttpStatus.BAD_REQUEST, "작성자만 삭제/수정할 수 없습니다."),
     DUPLICATED_USERNAME(HttpStatus.BAD_REQUEST,"중복된 사용자 이름 입니다."),
     INVALID_PASSWORD(HttpStatus.BAD_REQUEST,"비밀번호가 일치하지 않습니다.")
+
+
     ;
 
     private HttpStatus ecode ;
