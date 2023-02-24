@@ -12,11 +12,14 @@ public class BoardResponseDto {
     private String imgUrl;
     private LocalDateTime createdAt;
 
+    private int likeNum;
+
     @Builder
     public BoardResponseDto(Board board) {
         username = board.getUser().getUsername();
         title = board.getTitle();
         imgUrl = board.getImgUrl();
         createdAt = board.getCreatedAt();
+        likeNum = board.getBoardLikes().size();
     }
 }
