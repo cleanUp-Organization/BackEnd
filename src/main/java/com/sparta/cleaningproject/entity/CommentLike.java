@@ -1,7 +1,6 @@
 package com.sparta.cleaningproject.entity;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Likes {
+public class CommentLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,17 +19,11 @@ public class Likes {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "BOARD_ID")
-    private Board board;
-
-    @ManyToOne
     @JoinColumn(name = "COMMENT_ID")
     private Comment comment;
 
-    @Builder
-    private Likes(Board board, Comment comment, User user) {
-        this.board = board;
-        this.comment = comment;
+    public CommentLike(User user, Comment comment) {
         this.user = user;
+        this.comment = comment;
     }
 }
