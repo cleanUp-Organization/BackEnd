@@ -1,5 +1,6 @@
 package com.sparta.cleaningproject.entity;
 
+import com.sparta.cleaningproject.dto.BoardRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,10 +19,13 @@ public class Board extends Timestamped{
     public Long id;
 
     @Column(nullable = false)
-    public String title;
+    private String title;
 
     @Column(nullable = false)
-    public String content;
+    private String content;
+
+    @Column(nullable = false)
+    private String imgUrl;
 
     @ManyToOne
     @JoinColumn(name = "USERS_ID", nullable = false)
@@ -37,5 +41,17 @@ public class Board extends Timestamped{
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<Likes> likesList = new ArrayList<>();
+    @Builder
+    public Board(BoardRequestDto boardRequestDto, User user) {
+        this.title = boardRequestDto.getTitle();
+        this.content = boardRequestDto.getContent();
+        this.imgUrl = boardRequestDto.getImgUrl();
+        this.user = user;
+    }
 
+    public void update(BoardRequestDto boardRequestDto) {
+        title = boardRequestDto.getTitle();
+        content = boardRequestDto.getContent();
+        imgUrl = boardRequestDto.getImgUrl();
+    }
 }

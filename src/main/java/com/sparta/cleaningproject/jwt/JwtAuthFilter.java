@@ -1,7 +1,7 @@
 package com.sparta.cleaningproject.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sparta.cleaningproject.dto.ResponseMsgDto;
+import com.sparta.cleaningproject.dto.MessageResponseDto;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         if(token != null) {
             if(!jwtUtil.validateToken(token)){
-                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED.value());
+                jwtExceptionHandler(response, "Token Error", HttpStatus.UNAUTHORIZED);
                 return;
             }
             Claims info = jwtUtil.getUserInfoFromToken(token);
@@ -47,11 +47,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         SecurityContextHolder.setContext(context);
     }
 
-    public void jwtExceptionHandler(HttpServletResponse response, String msg, int statusCode) {
-        response.setStatus(statusCode);
+    public void jwtExceptionHandler(HttpServletResponse response, String msg, HttpStatus statusCode) {
+        response.setStatus(statusCode.value());
         response.setContentType("application/json");
         try {
-            String json = new ObjectMapper().writeValueAsString(new ResponseMsgDto(msg, statusCode));
+            String json = new ObjectMapper().writeValueAsString(new MessageResponseDto(msg, statusCode));
             response.getWriter().write(json);
         } catch (Exception e) {
             log.error(e.getMessage());
