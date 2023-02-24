@@ -16,24 +16,24 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
-    @PostMapping("/post")
+    @PostMapping("/board")
     public MessageResponseDto createBoard(@RequestBody BoardRequestDto boardRequestDto, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.createBoard(userDetails.getUser(), boardRequestDto);
     }
-    @GetMapping("/posts")
+    @GetMapping("/boards")
     public List<BoardResponseDto> getBoards() {
         return boardService.getBoards();
     }
-    @GetMapping("/post/{id}")
+    @GetMapping("/board/{id}")
     public BoardResponseDto getIdBoard(@PathVariable Long id) {
         return boardService.getIdBoard(id);
     }
 
-    @PutMapping("/post/{id}")
+    @PutMapping("/board/{id}")
     public BoardResponseDto updateBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody BoardRequestDto boardRequestDto) {
         return boardService.update(userDetails.getUser(), id, boardRequestDto);
     }
-    @DeleteMapping("post/{id}")
+    @DeleteMapping("board/{id}")
     public MessageResponseDto deleteBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return boardService.deleteBoard(userDetails.getUser(), id);
     }
