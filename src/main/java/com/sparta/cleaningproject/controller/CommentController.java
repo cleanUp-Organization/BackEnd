@@ -6,7 +6,6 @@ import com.sparta.cleaningproject.dto.MessageResponseDto;
 import com.sparta.cleaningproject.security.UserDetailsImpl;
 import com.sparta.cleaningproject.service.CommentService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
