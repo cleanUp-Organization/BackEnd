@@ -38,9 +38,6 @@ public class Board extends Timestamped{
     // @OnDelete는 지양해야한다.
 //    @OnDelete(action = OnDeleteAction.CASCADE)
     private List<Comment> commentList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private List<Likes> likesList = new ArrayList<>();
     @Builder
     public Board(BoardRequestDto boardRequestDto, User user) {
         this.title = boardRequestDto.getTitle();
