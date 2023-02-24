@@ -24,6 +24,7 @@ public class CustomExceptionHandler {
         MessageResponseDto messageResponseDto = errorResponse(e.getException());
         return ResponseEntity.badRequest().body(messageResponseDto);
     }
+    
     //Vaild결과로 발생한 예외를 반호나하기 위한 메소드
     private MessageResponseDto errorResponse(BindingResult bindingResult){
         String message="";
