@@ -47,7 +47,6 @@ public class UserService {
             if (!userRequestDto.getAdminToken().equals(ADMIN_TOKEN)) {
                 throw new CustomException(DUPLICATED_USERNAME);
             }
-
             
             role = UserRoleEnum.ADMIN;
         }
