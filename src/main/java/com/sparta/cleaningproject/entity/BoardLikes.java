@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Likes {
+public class BoardLikes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,14 +23,9 @@ public class Likes {
     @JoinColumn(name = "BOARD_ID")
     private Board board;
 
-    @ManyToOne
-    @JoinColumn(name = "COMMENT_ID")
-    private Comment comment;
-
     @Builder
-    private Likes(Board board, Comment comment, User user) {
+    private BoardLikes(Board board, User user) {
         this.board = board;
-        this.comment = comment;
         this.user = user;
     }
 }
