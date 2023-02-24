@@ -18,9 +18,7 @@ public class Comment extends Timestamped{
     private Long id;
 
     @Column(nullable = false)
-    private String comment;
-    @Column(nullable = false)
-    private String username;
+    private String contents;
 
     @ManyToOne
     @JoinColumn(name = "USERS_ID", nullable = false)
@@ -31,7 +29,7 @@ public class Comment extends Timestamped{
     private Board board;
 
     @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
-    private List<Likes> likesList = new ArrayList<>();
+    private List<CommentLike> commentLikeList = new ArrayList<>();
     //연관관계 편의 메서드
     public void setBoard(Board board) {
         if (this.board != null) {
@@ -41,4 +39,15 @@ public class Comment extends Timestamped{
         board.getCommentList().add(this);
     }
 
+    @Builder
+    public Comment(String contents, Board board, User user){
+        this.contents = contents;
+        this.board = board;
+        this.user = user;
+    }
+
+    public void update(String contents, User user) {
+        this.contents = contents;
+        this.user = user;
+    }
 }
