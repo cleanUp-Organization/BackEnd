@@ -1,6 +1,7 @@
 package com.sparta.cleaningproject.exception;
 
-import com.sparta.Board3_security.dto.responseDto.MessageResponseDto;
+
+import com.sparta.cleaningproject.dto.MessageResponseDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -33,15 +34,15 @@ public class CustomExceptionHandler {
 
         return MessageResponseDto.builder()
                 .statusCode(HttpStatus.BAD_REQUEST)
-                .message(message)
+                .msg(message)
                 .build();
     }
 
     //CustomException Handling 결과를 반환할때 사용
-    private MessageResponseDto errorResponse(java.lang.Exception exception){
+    private MessageResponseDto errorResponse(Exception exception){
         return MessageResponseDto.builder()
                 .statusCode(exception.getEcode())
-                .message(exception.getMsg())
+                .msg(exception.getMsg())
                 .build();
     }
 }
