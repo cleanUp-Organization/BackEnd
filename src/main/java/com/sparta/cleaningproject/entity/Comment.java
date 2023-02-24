@@ -39,4 +39,11 @@ public class Comment extends Timestamped{
         board.getCommentList().add(this);
     }
 
+    @Builder
+    public Comment(String contents, Board board, User user){
+        this.contents = contents;
+        this.board = board;
+        this.user = user;
+    }
+
 }
