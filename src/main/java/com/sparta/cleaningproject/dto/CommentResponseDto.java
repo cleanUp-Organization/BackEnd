@@ -2,9 +2,10 @@ package com.sparta.cleaningproject.dto;
 
 import com.sparta.cleaningproject.entity.Comment;
 import lombok.Builder;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
-
+@Getter
 public class CommentResponseDto {
     private Long id;
     private String contents;
