@@ -1,5 +1,6 @@
 package com.sparta.cleaningproject.controller;
 
+import com.sparta.cleaningproject.dto.BoardCommentResponseDto;
 import com.sparta.cleaningproject.dto.BoardRequestDto;
 import com.sparta.cleaningproject.dto.BoardResponseDto;
 import com.sparta.cleaningproject.dto.MessageResponseDto;
@@ -21,7 +22,7 @@ public class BoardController {
         return boardService.createBoard(userDetails.getUser(), boardRequestDto);
     }
     @GetMapping("/boards")
-    public List<BoardResponseDto> getBoards() {
+    public List<BoardCommentResponseDto> getBoards() {
         return boardService.getBoards();
     }
     @GetMapping("/board/{id}")

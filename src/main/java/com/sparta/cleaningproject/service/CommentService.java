@@ -35,6 +35,7 @@ public class CommentService {
         Comment comment =  commentRepository.save(Comment.builder()
                 .contents(requestDto.getContents())
                 .board(board)
+
                 .user(user).build());;
                 comment.setBoard(board);
         return new CommentResponseDto(comment);

@@ -1,9 +1,8 @@
 package com.sparta.cleaningproject.service;
 
-import com.sparta.cleaningproject.dto.BoardRequestDto;
-import com.sparta.cleaningproject.dto.BoardResponseDto;
-import com.sparta.cleaningproject.dto.MessageResponseDto;
+import com.sparta.cleaningproject.dto.*;
 import com.sparta.cleaningproject.entity.Board;
+import com.sparta.cleaningproject.entity.Comment;
 import com.sparta.cleaningproject.entity.User;
 import com.sparta.cleaningproject.entity.UserRoleEnum;
 import com.sparta.cleaningproject.exception.CustomException;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -36,12 +36,18 @@ public class BoardService {
                 .build();
     }
     @Transactional
-    public List<BoardResponseDto> getBoards() {
+    public List<BoardCommentResponseDto> getBoards() {
         List<Board> boards = boardRepository.findAllByOrderByCreatedAtDesc();
-        List<BoardResponseDto> boardResponseDto = new ArrayList<>();
+        List<BoardCommentResponseDto> boardResponseDto = new ArrayList<>();
         for (Board b : boards) {
-            boardResponseDto.add(BoardResponseDto.builder()
+            b.getCommentList().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
+            List<CommentResponseDto> commentResponseDto = new ArrayList<>();
+            for (Comment c : b.getCommentList()) {
+                commentResponseDto.add(new CommentResponseDto(c));
+            }
+            boardResponseDto.add(BoardCommentResponseDto.builder()
                     .board(b)
+                    .commentList(commentResponseDto)
                     .build());
         }
         return boardResponseDto;
