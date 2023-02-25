@@ -16,12 +16,12 @@ public class CommentController {
     private final CommentService commentService;
 
     @PostMapping("/comment/{id}")
-    public CommentResponseDto createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public MessageResponseDto createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return commentService.createComment(id,requestDto,userDetails.getUser());
     }
 
     @PutMapping("/comment/{id}")
-    public CommentResponseDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails){
+    public MessageResponseDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails){
         return commentService.updateComment(id,requestDto,userDetails.getUser());
     }
 
