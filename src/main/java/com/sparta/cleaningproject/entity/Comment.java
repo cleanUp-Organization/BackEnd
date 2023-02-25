@@ -28,6 +28,9 @@ public class Comment extends Timestamped{
     @JoinColumn(name = "BOARD_ID", nullable = false)
     private Board board;
 
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    private List<CommentLikes> commentLikes = new ArrayList<>();
+
     //연관관계 편의 메서드
     public void setBoard(Board board) {
         if (this.board != null) {

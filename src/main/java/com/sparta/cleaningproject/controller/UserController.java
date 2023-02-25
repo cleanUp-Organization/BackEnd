@@ -19,14 +19,14 @@ import javax.validation.Valid;
 @RequiredArgsConstructor
 public class UserController {
 
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping("/api/user/signup")
     public MessageResponseDto signup(@Valid @RequestBody UserRequestDto userRequestDto) {
         return userService.signup(userRequestDto);
     }
 
-    @PostMapping("/api/login")
+    @PostMapping("/api/user/login")
     public MessageResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return userService.login(loginRequestDto, response);
     }

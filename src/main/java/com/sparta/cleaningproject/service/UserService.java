@@ -32,7 +32,7 @@ public class UserService {
     public MessageResponseDto signup(UserRequestDto userRequestDto) {
 
         String username = userRequestDto.getUsername();
-        String password = userRequestDto.getPassword();
+        String password = passwordEncoder.encode(userRequestDto.getPassword());
 
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) {

@@ -20,7 +20,7 @@ public class LikesController {
         return likesService.boardLike(userDetails.getUser(), boardId);
     }
 
-    @PostMapping("/board/like/{commentId}")
+    @PostMapping("/comment/like/{commentId}")
     public MessageResponseDto commentLike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return likesService.commentLike(userDetails.getUser(), commentId);
     }

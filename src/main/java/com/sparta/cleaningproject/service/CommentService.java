@@ -36,6 +36,7 @@ public class CommentService {
                 .contents(requestDto.getContents())
                 .board(board)
                 .user(user).build());;
+                comment.setBoard(board);
         return new CommentResponseDto(comment);
     }
 
