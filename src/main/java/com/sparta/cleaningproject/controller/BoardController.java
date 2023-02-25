@@ -31,7 +31,7 @@ public class BoardController {
     }
 
     @PutMapping("/board/{id}")
-    public BoardResponseDto updateBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody BoardRequestDto boardRequestDto) {
+    public MessageResponseDto updateBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody BoardRequestDto boardRequestDto) {
         return boardService.update(userDetails.getUser(), id, boardRequestDto);
     }
     @DeleteMapping("board/{id}")

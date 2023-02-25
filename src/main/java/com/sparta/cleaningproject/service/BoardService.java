@@ -57,21 +57,27 @@ public class BoardService {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
-
+        board.getCommentList().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
+        List<CommentResponseDto> commentResponseDto = new ArrayList<>();
+        for (Comment c : board.getCommentList()) {
+            commentResponseDto.add(new CommentResponseDto(c));
+        }
         return BoardResponseDto.builder()
                 .board(board)
+                .commentList(commentResponseDto)
                 .build();
     }
     @Transactional
-    public BoardResponseDto update(User user, Long id, BoardRequestDto boardRequestDto) {
+    public MessageResponseDto update(User user, Long id, BoardRequestDto boardRequestDto) {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
         if (Objects.equals(user.getId(), board.getUser().getId()) || user.getRole() == UserRoleEnum.ADMIN) {
             board.update(boardRequestDto);
             // 요청받은 DTO 로 DB에 저장할 객체 만들기
-            return BoardResponseDto.builder()
-                    .board(board)
+            return MessageResponseDto.builder()
+                    .statusCode(HttpStatus.OK)
+                    .msg("게시글 수정 성공")
                     .build();
         } else {
             throw new CustomException(AUTHORIZATION);

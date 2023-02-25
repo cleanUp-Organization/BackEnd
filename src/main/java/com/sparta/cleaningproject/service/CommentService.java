@@ -1,7 +1,6 @@
 package com.sparta.cleaningproject.service;
 
 import com.sparta.cleaningproject.dto.CommentRequestDto;
-import com.sparta.cleaningproject.dto.CommentResponseDto;
 import com.sparta.cleaningproject.dto.MessageResponseDto;
 import com.sparta.cleaningproject.entity.Board;
 import com.sparta.cleaningproject.entity.Comment;
@@ -35,7 +34,6 @@ public class CommentService {
         Comment comment =  commentRepository.save(Comment.builder()
                 .contents(requestDto.getContents())
                 .board(board)
-
                 .user(user).build());;
                 comment.setBoard(board);
         return MessageResponseDto.builder()

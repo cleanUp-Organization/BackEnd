@@ -25,7 +25,7 @@ public class LikesService {
     @Transactional
     public MessageResponseDto boardLike(User user, Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(
-                () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
+                () -> new CustomException(Exception.NOT_FOUND_BOARD)
         );
         BoardLikes boardLikesBoardUser = boardLikesRepository.findByBoardIdAndUserId(boardId,user.getId());
         if (boardLikesBoardUser == null) {
