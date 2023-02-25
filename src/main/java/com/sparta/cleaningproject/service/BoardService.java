@@ -56,7 +56,7 @@ public class BoardService {
                 .board(board)
                 .build();
     }
-
+    @Transactional
     public BoardResponseDto update(User user, Long id, BoardRequestDto boardRequestDto) {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
@@ -71,7 +71,7 @@ public class BoardService {
             throw new CustomException(AUTHORIZATION);
         }
     }
-
+    @Transactional
     public MessageResponseDto deleteBoard(User user, Long id) {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)

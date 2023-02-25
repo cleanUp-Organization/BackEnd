@@ -39,7 +39,7 @@ public class CommentService {
                 comment.setBoard(board);
         return new CommentResponseDto(comment);
     }
-
+    @Transactional
     public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto , User user){
 
         Comment comment = commentRepository.findById(id).orElseThrow(
@@ -52,7 +52,7 @@ public class CommentService {
         comment.update(requestDto.getContents(),user);
         return new CommentResponseDto(comment);
     }
-
+    @Transactional
     public MessageResponseDto deleteComment(Long id, User user) {
         Comment comment = commentRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_COMMENT)

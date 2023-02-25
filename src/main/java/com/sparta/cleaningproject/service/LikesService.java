@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class LikesService {
@@ -20,7 +22,7 @@ public class LikesService {
     private final CommentRepository commentRepository;
     private final CommentLikesRepository commentLikesRepository;
 
-
+    @Transactional
     public MessageResponseDto boardLike(User user, Long boardId) {
         Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new IllegalArgumentException("아이디가 존재하지 않습니다.")
@@ -44,7 +46,7 @@ public class LikesService {
                     .build();
         }
     }
-
+    @Transactional
     public MessageResponseDto commentLike(User user , Long commentId){
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new CustomException(Exception.NOT_FOUND_COMMENT)
