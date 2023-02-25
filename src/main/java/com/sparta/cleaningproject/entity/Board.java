@@ -27,7 +27,7 @@ public class Board extends Timestamped{
     @Column(nullable = false)
     private String imgUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USERS_ID", nullable = false)
     private User user;
     // cascade는 부모가 자식의 생명주기를 갖고있고,

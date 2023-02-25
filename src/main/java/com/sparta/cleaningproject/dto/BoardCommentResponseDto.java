@@ -16,6 +16,7 @@ public class BoardCommentResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private int likesNum;
+    private String imgUrl;
 
     private List<CommentResponseDto> commentList;
 
@@ -29,6 +30,7 @@ public class BoardCommentResponseDto {
         modifiedAt = board.getModifiedAt();
         this.commentList = commentList;
         likesNum = board.getBoardLikes().size();
+        imgUrl = board.getImgUrl();
     }
 
 }
