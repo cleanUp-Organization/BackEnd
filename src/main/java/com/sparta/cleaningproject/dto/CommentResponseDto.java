@@ -14,13 +14,11 @@ public class CommentResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
-    private int likeNum;
     @Builder
     public CommentResponseDto(Comment comment){
         id = comment.getId();
         contents = comment.getContents();
         username = comment.getUser().getUsername();
-        likeNum = comment.getCommentLikes().size();
         createdAt = comment.getCreatedAt();
         modifiedAt = comment.getModifiedAt();
     }
