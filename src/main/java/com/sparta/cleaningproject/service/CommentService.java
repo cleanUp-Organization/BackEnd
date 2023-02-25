@@ -27,7 +27,7 @@ public class CommentService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public CommentResponseDto createComment(Long id, CommentRequestDto requestDto, User user){
+    public MessageResponseDto createComment(Long id, CommentRequestDto requestDto, User user){
 
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
@@ -38,10 +38,13 @@ public class CommentService {
 
                 .user(user).build());;
                 comment.setBoard(board);
-        return new CommentResponseDto(comment);
+        return MessageResponseDto.builder()
+                .msg("댓글 작성 성공")
+                .statusCode(HttpStatus.OK)
+                .build();
     }
     @Transactional
-    public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto , User user){
+    public MessageResponseDto updateComment(Long id, CommentRequestDto requestDto , User user){
 
         Comment comment = commentRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_COMMENT)
@@ -51,7 +54,10 @@ public class CommentService {
             throw new CustomException(AUTHORIZATION);
         }
         comment.update(requestDto.getContents(),user);
-        return new CommentResponseDto(comment);
+        return MessageResponseDto.builder()
+                .msg("댓글 수정 성공")
+                .statusCode(HttpStatus.OK)
+                .build();
     }
     @Transactional
     public MessageResponseDto deleteComment(Long id, User user) {
