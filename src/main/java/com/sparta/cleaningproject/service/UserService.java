@@ -7,6 +7,8 @@ import com.sparta.cleaningproject.entity.User;
 import com.sparta.cleaningproject.entity.UserRoleEnum;
 import com.sparta.cleaningproject.exception.CustomException;
 import com.sparta.cleaningproject.jwt.JwtUtil;
+import com.sparta.cleaningproject.repository.BoardRepository;
+import com.sparta.cleaningproject.repository.CommentRepository;
 import com.sparta.cleaningproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,8 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+    private final BoardRepository boardRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public MessageResponseDto signup(UserRequestDto userRequestDto) {
@@ -93,6 +97,8 @@ public class UserService {
                     throw new CustomException(NOT_FOUND_USER);
                 }
         );
+        boardRepository.deleteAllByUser(userCheck);
+        commentRepository.deleteAllByUser(userCheck);
 
         userRepository.delete(userCheck);
 
