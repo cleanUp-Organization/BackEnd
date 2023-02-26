@@ -1,7 +1,6 @@
 package com.sparta.cleaningproject.controller;
 
 import com.sparta.cleaningproject.dto.CommentRequestDto;
-import com.sparta.cleaningproject.dto.CommentResponseDto;
 import com.sparta.cleaningproject.dto.MessageResponseDto;
 import com.sparta.cleaningproject.security.UserDetailsImpl;
 import com.sparta.cleaningproject.service.CommentService;
