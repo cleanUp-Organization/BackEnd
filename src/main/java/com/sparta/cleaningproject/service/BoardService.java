@@ -1,17 +1,16 @@
 package com.sparta.cleaningproject.service;
 
 import com.sparta.cleaningproject.dto.*;
-import com.sparta.cleaningproject.entity.Board;
-import com.sparta.cleaningproject.entity.Comment;
-import com.sparta.cleaningproject.entity.User;
-import com.sparta.cleaningproject.entity.UserRoleEnum;
+import com.sparta.cleaningproject.entity.*;
 import com.sparta.cleaningproject.exception.CustomException;
 import com.sparta.cleaningproject.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -23,11 +22,14 @@ import static com.sparta.cleaningproject.exception.Exception.*;
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final S3Uploader s3Uploader;
     @Transactional
-    public MessageResponseDto createBoard(User user, BoardRequestDto boardRequestDto) {
+    public MessageResponseDto createBoard(User user, BoardRequestDto boardRequestDto, MultipartFile multipartFile) throws IOException {
+        String imgUrl = s3Uploader.upload(multipartFile);
         Board board = Board.builder()
                 .boardRequestDto(boardRequestDto)
                 .user(user)
+                .imgUrl(imgUrl)
                 .build();
         boardRepository.save(board);
         return MessageResponseDto.builder()
@@ -68,12 +70,13 @@ public class BoardService {
                 .build();
     }
     @Transactional
-    public MessageResponseDto update(User user, Long id, BoardRequestDto boardRequestDto) {
+    public MessageResponseDto update(User user, Long id, BoardRequestDto boardRequestDto, MultipartFile multipartFile) throws IOException {
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
+        String imgUrl = s3Uploader.upload(multipartFile);
         if (Objects.equals(user.getId(), board.getUser().getId()) || user.getRole() == UserRoleEnum.ADMIN) {
-            board.update(boardRequestDto);
+            board.update(boardRequestDto,imgUrl);
             // 요청받은 DTO 로 DB에 저장할 객체 만들기
             return MessageResponseDto.builder()
                     .statusCode(HttpStatus.OK)
