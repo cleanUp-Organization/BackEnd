@@ -25,6 +25,7 @@ public class BoardController {
     public List<BoardCommentResponseDto> getBoards() {
         return boardService.getBoards();
     }
+
     @GetMapping("/board/{id}")
     public BoardResponseDto getIdBoard(@PathVariable Long id) {
         return boardService.getIdBoard(id);

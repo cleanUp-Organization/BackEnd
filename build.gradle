@@ -39,7 +39,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation 'org.springframework.boot:spring-boot-starter-aop:2.7.0'
-    implementation 'mysql:mysql-connector-java'
+//    implementation 'mysql:mysql-connector-java'
 }
 
 tasks.named('test') {
