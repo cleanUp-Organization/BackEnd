@@ -1,7 +1,6 @@
 package com.sparta.cleaningproject.service;
 
 import com.sparta.cleaningproject.dto.CommentRequestDto;
-import com.sparta.cleaningproject.dto.CommentResponseDto;
 import com.sparta.cleaningproject.dto.MessageResponseDto;
 import com.sparta.cleaningproject.entity.Board;
 import com.sparta.cleaningproject.entity.Comment;
@@ -27,7 +26,7 @@ public class CommentService {
     private final BoardRepository boardRepository;
 
     @Transactional
-    public CommentResponseDto createComment(Long id, CommentRequestDto requestDto, User user){
+    public MessageResponseDto createComment(Long id, CommentRequestDto requestDto, User user){
 
         Board board = boardRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
@@ -36,10 +35,14 @@ public class CommentService {
                 .contents(requestDto.getContents())
                 .board(board)
                 .user(user).build());;
-        return new CommentResponseDto(comment);
+                comment.setBoard(board);
+        return MessageResponseDto.builder()
+                .msg("댓글 작성 성공")
+                .statusCode(HttpStatus.OK)
+                .build();
     }
-
-    public CommentResponseDto updateComment(Long id, CommentRequestDto requestDto , User user){
+    @Transactional
+    public MessageResponseDto updateComment(Long id, CommentRequestDto requestDto , User user){
 
         Comment comment = commentRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_COMMENT)
@@ -49,9 +52,12 @@ public class CommentService {
             throw new CustomException(AUTHORIZATION);
         }
         comment.update(requestDto.getContents(),user);
-        return new CommentResponseDto(comment);
+        return MessageResponseDto.builder()
+                .msg("댓글 수정 성공")
+                .statusCode(HttpStatus.OK)
+                .build();
     }
-
+    @Transactional
     public MessageResponseDto deleteComment(Long id, User user) {
         Comment comment = commentRepository.findById(id).orElseThrow(
                 () -> new CustomException(NOT_FOUND_COMMENT)

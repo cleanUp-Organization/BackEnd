@@ -1,5 +1,6 @@
 package com.sparta.cleaningproject.entity;
 
+import com.sparta.cleaningproject.dto.BoardRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,12 +19,15 @@ public class Board extends Timestamped{
     public Long id;
 
     @Column(nullable = false)
-    public String title;
+    private String title;
 
     @Column(nullable = false)
-    public String content;
+    private String content;
 
-    @ManyToOne
+    @Column(nullable = false)
+    private String imgUrl;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USERS_ID", nullable = false)
     private User user;
     // cascade는 부모가 자식의 생명주기를 갖고있고,
@@ -36,6 +40,18 @@ public class Board extends Timestamped{
     private List<Comment> commentList = new ArrayList<>();
 
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
-    private List<Likes> likesList = new ArrayList<>();
+    private List<BoardLikes> boardLikes = new ArrayList<>();
+    @Builder
+    public Board(BoardRequestDto boardRequestDto, User user) {
+        this.title = boardRequestDto.getTitle();
+        this.content = boardRequestDto.getContent();
+        this.imgUrl = boardRequestDto.getImgUrl();
+        this.user = user;
+    }
 
+    public void update(BoardRequestDto boardRequestDto) {
+        title = boardRequestDto.getTitle();
+        content = boardRequestDto.getContent();
+        imgUrl = boardRequestDto.getImgUrl();
+    }
 }
