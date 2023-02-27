@@ -23,6 +23,7 @@ public class User {
 
     @Column(nullable = false)
     private boolean withdrawal=false;
+
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     private UserRoleEnum role;
