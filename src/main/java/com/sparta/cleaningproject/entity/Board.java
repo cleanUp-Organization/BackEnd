@@ -42,16 +42,16 @@ public class Board extends Timestamped{
     @OneToMany(mappedBy = "board", cascade = CascadeType.ALL)
     private List<BoardLikes> boardLikes = new ArrayList<>();
     @Builder
-    public Board(BoardRequestDto boardRequestDto, User user) {
+    public Board(BoardRequestDto boardRequestDto, User user,String imgUrl) {
         this.title = boardRequestDto.getTitle();
         this.content = boardRequestDto.getContent();
-        this.imgUrl = boardRequestDto.getImgUrl();
+        this.imgUrl = imgUrl;
         this.user = user;
     }
 
-    public void update(BoardRequestDto boardRequestDto) {
+    public void update(BoardRequestDto boardRequestDto, String imgUrl) {
         title = boardRequestDto.getTitle();
         content = boardRequestDto.getContent();
-        imgUrl = boardRequestDto.getImgUrl();
+        this.imgUrl = imgUrl;
     }
 }
