@@ -29,4 +29,11 @@ public class BoardResponseDto {
         modifiedAt = board.getModifiedAt();
         this.commentList = commentList;
     }
+
+    public static BoardResponseDto of(Board board, List<CommentResponseDto> commentResponseDto) {
+        return BoardResponseDto.builder()
+                .board(board)
+                .commentList(commentResponseDto)
+                .build();
+    }
 }

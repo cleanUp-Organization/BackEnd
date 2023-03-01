@@ -27,5 +27,12 @@ import javax.persistence.*;
             this.user = user;
             this.comment = comment;
         }
+
+        public static CommentLikes of(Comment comment, User user) {
+            return CommentLikes.builder()
+                    .comment(comment)
+                    .user(user)
+                    .build();
+        }
     }
 

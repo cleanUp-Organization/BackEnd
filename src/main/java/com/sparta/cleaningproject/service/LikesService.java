@@ -33,10 +33,7 @@ public class LikesService {
         );
         BoardLikes boardLikesBoardUser = boardLikesRepository.findByBoardIdAndUserId(boardId,user.getId());
         if (boardLikesBoardUser == null) {
-            BoardLikes boardLikes = BoardLikes.builder()
-                    .board(board)
-                    .user(user)
-                    .build();
+            BoardLikes boardLikes = BoardLikes.of(board, user);
             boardLikesRepository.save(boardLikes);
             return apiResponse.success(BOARD_LIKE_SUCCESS.getMsg());
         } else {
@@ -51,10 +48,7 @@ public class LikesService {
         );
         CommentLikes commentLikesCommentUser = commentLikesRepository.findByCommentIdAndUserId(commentId,user.getId());
         if(commentLikesCommentUser == null){
-            CommentLikes commentLikes = CommentLikes.builder()
-                    .comment(comment)
-                    .user(user)
-                    .build();
+            CommentLikes commentLikes = CommentLikes.of(comment, user);
             commentLikesRepository.save(commentLikes);
             return apiResponse.success(COMMENT_LIKE_SUCCESS.getMsg());
         }else {

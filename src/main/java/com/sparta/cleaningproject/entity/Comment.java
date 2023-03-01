@@ -1,5 +1,6 @@
 package com.sparta.cleaningproject.entity;
 
+import com.sparta.cleaningproject.dto.CommentRequestDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -50,5 +51,13 @@ public class Comment extends Timestamped{
     public void update(String contents, User user) {
         this.contents = contents;
         this.user = user;
+    }
+
+    public static Comment of(CommentRequestDto commentRequestDto, Board board, User user) {
+        return Comment.builder()
+                .contents(commentRequestDto.getContents())
+                .board(board)
+                .user(user)
+                .build();
     }
 }

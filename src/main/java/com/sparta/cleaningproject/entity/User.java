@@ -38,4 +38,12 @@ public class User {
     public void changeWithdrawal() {
         withdrawal = !withdrawal;
     }
+
+    public static User of(String username,String password,UserRoleEnum role) {
+        return User.builder()
+                .username(username)
+                .password(password)
+                .role(role)
+                .build();
+    }
 }
