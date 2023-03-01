@@ -35,11 +35,7 @@ public class BoardService {
         } else {
              imgUrl = s3Uploader.upload(boardRequestDto.getImgUrl());
         }
-        Board board = Board.builder()
-                .boardRequestDto(boardRequestDto)
-                .user(user)
-                .imgUrl(imgUrl)
-                .build();
+        Board board = Board.of(boardRequestDto, user, imgUrl);
         boardRepository.save(board);
         return apiResponse.success(CONSTRUCT_SUCCESS.getMsg());
     }
