@@ -34,10 +34,7 @@ public class CommentService {
         Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
-        Comment comment =  commentRepository.save(Comment.builder()
-                .contents(requestDto.getContents())
-                .board(board)
-                .user(user).build());
+        Comment comment =  commentRepository.save(Comment.of(requestDto.getContents(), board,user));
                 comment.setBoard(board);
         return apiResponse.success(COMMENT_CREATE_SUCCESS.getMsg());
     }
