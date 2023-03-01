@@ -5,6 +5,7 @@ import com.sparta.cleaningproject.entity.*;
 import com.sparta.cleaningproject.exception.CustomException;
 import com.sparta.cleaningproject.repository.BoardRepository;
 import com.sparta.cleaningproject.response.ApiResponse;
+import com.sparta.cleaningproject.response.BooleanIdCheck;
 import com.sparta.cleaningproject.response.ResponseMsg;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final S3Uploader s3Uploader;
     private final ApiResponse apiResponse;
+    private final BooleanIdCheck booleanIdCheck;
     @Transactional
     public MessageResponseDto createBoard(User user, BoardRequestDto boardRequestDto) throws IOException {
         String imgUrl = "";
@@ -49,10 +51,7 @@ public class BoardService {
             for (Comment c : b.getCommentList()) {
                 commentResponseDto.add(new CommentResponseDto(c));
             }
-            boardResponseDto.add(BoardCommentResponseDto.builder()
-                    .board(b)
-                    .commentList(commentResponseDto)
-                    .build());
+            boardResponseDto.add(BoardCommentResponseDto.of(b, commentResponseDto));
         }
         return boardResponseDto;
     }
@@ -66,10 +65,7 @@ public class BoardService {
         for (Comment c : board.getCommentList()) {
             commentResponseDto.add(new CommentResponseDto(c));
         }
-        return BoardResponseDto.builder()
-                .board(board)
-                .commentList(commentResponseDto)
-                .build();
+        return BoardResponseDto.of(board, commentResponseDto);
     }
     @Transactional
     public MessageResponseDto update(User user, Long boardId, BoardRequestDto boardRequestDto) throws IOException {
@@ -82,8 +78,8 @@ public class BoardService {
         } else {
             imgUrl = s3Uploader.upload(boardRequestDto.getImgUrl());
         }
-        if (Objects.equals(user.getId(), board.getUser().getId()) || user.getRole() == UserRoleEnum.ADMIN) {
-            board.update(boardRequestDto,imgUrl);
+        if (booleanIdCheck.CheckId(user,board)) {
+            board.update(boardRequestDto, imgUrl);
             // 요청받은 DTO 로 DB에 저장할 객체 만들기
             return apiResponse.success(BOARD_UPDATE_SUCCESS.getMsg());
         } else {
@@ -95,7 +91,7 @@ public class BoardService {
         Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
-        if (Objects.equals(user.getId(), board.getUser().getId()) || user.getRole() == UserRoleEnum.ADMIN) {
+        if (booleanIdCheck.CheckId(user,board)) {
             boardRepository.deleteById(boardId);
             return apiResponse.success(BOARD_DELETE_SUCCESS.getMsg());
         } else {

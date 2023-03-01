@@ -33,4 +33,11 @@ public class BoardCommentResponseDto {
         imgUrl = board.getImgUrl();
     }
 
+    public static BoardCommentResponseDto of(Board board, List<CommentResponseDto> commentResponseDto) {
+        return BoardCommentResponseDto.builder()
+                .board(board)
+                .commentList(commentResponseDto)
+                .build();
+    }
+
 }

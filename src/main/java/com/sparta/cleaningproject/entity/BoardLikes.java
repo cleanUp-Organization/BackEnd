@@ -28,4 +28,11 @@ public class BoardLikes {
         this.board = board;
         this.user = user;
     }
+
+    public static BoardLikes of(Board board, User user) {
+        return BoardLikes.builder()
+                .board(board)
+                .user(user)
+                .build();
+    }
 }
