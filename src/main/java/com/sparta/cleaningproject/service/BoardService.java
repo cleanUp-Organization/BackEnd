@@ -73,11 +73,7 @@ public class BoardService {
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
         String imgUrl = "";
-        if (boardRequestDto.getImgUrl() == null) {
-            imgUrl = board.getImgUrl();
-        } else {
-            imgUrl = s3Uploader.upload(boardRequestDto.getImgUrl());
-        }
+        imgUrl=apiResponse.checkNullBoardRequestDto(board,boardRequestDto,imgUrl);
         if (booleanIdCheck.CheckId(user,board)) {
             board.update(boardRequestDto, imgUrl);
             // 요청받은 DTO 로 DB에 저장할 객체 만들기
