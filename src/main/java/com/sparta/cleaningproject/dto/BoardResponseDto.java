@@ -1,6 +1,7 @@
 package com.sparta.cleaningproject.dto;
 
 import com.sparta.cleaningproject.entity.Board;
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Getter
 public class BoardResponseDto {
+    @Parameter(required = true)
     private String username;
     private String title;
     private String content;
