@@ -74,7 +74,7 @@ public class BoardService {
         );
         String imgUrl = "";
         if (boardRequestDto.getImgUrl() == null) {
-            imgUrl = "https://cleaningproject.s3.ap-northeast-2.amazonaws.com/static/%EB%8F%99%EA%B7%B8%EB%9D%BC%EB%AF%B8%20%EC%B2%AD%EC%86%8C.png";
+            imgUrl = board.getImgUrl();
         } else {
             imgUrl = s3Uploader.upload(boardRequestDto.getImgUrl());
         }

@@ -21,11 +21,11 @@ public class Comment extends Timestamped{
     @Column(nullable = false)
     private String contents;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "USERS_ID", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "BOARD_ID", nullable = false)
     private Board board;
 
@@ -53,11 +53,4 @@ public class Comment extends Timestamped{
         this.user = user;
     }
 
-    public static Comment of(CommentRequestDto commentRequestDto, Board board, User user) {
-        return Comment.builder()
-                .contents(commentRequestDto.getContents())
-                .board(board)
-                .user(user)
-                .build();
-    }
 }

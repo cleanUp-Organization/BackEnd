@@ -20,12 +20,5 @@ public class LoginResponseDto {
         this.statusCode = statusCode;
     }
 
-    public static LoginResponseDto of(String  jwtUtil) {
-        return LoginResponseDto.builder()
-                .msg("로그인 성공")
-                .statusCode(HttpStatus.OK)
-                .jwtUtil(jwtUtil)
-                .build();
-    }
 }
 
