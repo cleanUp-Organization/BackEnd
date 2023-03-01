@@ -29,37 +29,38 @@ public class CommentService {
     private final ApiResponse apiResponse;
 
     @Transactional
-    public MessageResponseDto createComment(Long boardId, CommentRequestDto requestDto, User user) {
+    public MessageResponseDto createComment(Long boardId, CommentRequestDto requestDto, User user){
 
         Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
-        Comment comment = commentRepository.save(Comment.of(requestDto,board,user));
-        comment.setBoard(board);
+        Comment comment =  commentRepository.save(Comment.builder()
+                .contents(requestDto.getContents())
+                .board(board)
+                .user(user).build());
+                comment.setBoard(board);
         return apiResponse.success(COMMENT_CREATE_SUCCESS.getMsg());
     }
-
     @Transactional
-    public MessageResponseDto updateComment(Long commentId, CommentRequestDto requestDto, User user) {
+    public MessageResponseDto updateComment(Long commentId, CommentRequestDto requestDto , User user){
 
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_COMMENT)
         );
-        Optional<Comment> found = commentRepository.findByIdAndUser(commentId, user);
-        if (found.isEmpty() && user.getRole() == UserRoleEnum.USER) {
+        Optional<Comment> found = commentRepository.findByIdAndUser(commentId,user);
+        if(found.isEmpty() && user.getRole() == UserRoleEnum.USER){
             throw new CustomException(AUTHORIZATION);
         }
-        comment.update(requestDto.getContents(), user);
+        comment.update(requestDto.getContents(),user);
         return apiResponse.success(COMMENT_UPDATE_SUCCESS.getMsg());
     }
-
     @Transactional
     public MessageResponseDto deleteComment(Long commentId, User user) {
         Comment comment = commentRepository.findById(commentId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_COMMENT)
         );
         Optional<Comment> found = commentRepository.findByIdAndUser(commentId, user);
-        if (found.isEmpty() && user.getRole() == UserRoleEnum.USER) {
+        if(found.isEmpty() && user.getRole() == UserRoleEnum.USER){
             throw new CustomException(AUTHORIZATION);
         }
         commentRepository.deleteById(commentId);
