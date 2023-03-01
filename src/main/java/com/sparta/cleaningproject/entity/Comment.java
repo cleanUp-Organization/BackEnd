@@ -53,4 +53,11 @@ public class Comment extends Timestamped{
         this.user = user;
     }
 
+    public static Comment of(String contents, Board board, User user){
+        return builder()
+                .contents(contents)
+                .board(board)
+                .user(user).build();
+    }
+
 }
