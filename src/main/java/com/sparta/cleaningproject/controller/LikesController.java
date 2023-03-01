@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class LikesController {
     private final LikesService likesService;
-    @PostMapping("/board/like/{boardId}")
+    @PostMapping("/boards/{boardId}/like")
     public MessageResponseDto boardLike(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return likesService.boardLike(userDetails.getUser(), boardId);
     }
 
-    @PostMapping("/comment/like/{commentId}")
+    @PostMapping("/boards/comments/{commentId}/like")
     public MessageResponseDto commentLike(@PathVariable Long commentId, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return likesService.commentLike(userDetails.getUser(), commentId);
     }

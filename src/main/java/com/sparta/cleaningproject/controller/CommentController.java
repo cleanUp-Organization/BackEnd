@@ -10,22 +10,22 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api")
+@RequestMapping("/api/boards")
 public class CommentController {
     private final CommentService commentService;
 
-    @PostMapping("/comment/{id}")
-    public MessageResponseDto createComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return commentService.createComment(id,requestDto,userDetails.getUser());
+    @PostMapping("/{boardId}/comments")
+    public MessageResponseDto createComment(@PathVariable Long boardId, @RequestBody CommentRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return commentService.createComment(boardId,requestDto,userDetails.getUser());
     }
 
-    @PutMapping("/comment/{id}")
-    public MessageResponseDto updateComment(@PathVariable Long id, @RequestBody CommentRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return commentService.updateComment(id,requestDto,userDetails.getUser());
+    @PutMapping("/comments/{commentId}")
+    public MessageResponseDto updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto requestDto , @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return commentService.updateComment(commentId,requestDto,userDetails.getUser());
     }
 
-    @DeleteMapping("/comment/{id}")
-    private MessageResponseDto deleteComment(@PathVariable Long id , @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return commentService.deleteComment(id,userDetails.getUser());
+    @DeleteMapping("/comments/{commentId}")
+    private MessageResponseDto deleteComment(@PathVariable Long commentId , @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return commentService.deleteComment(commentId,userDetails.getUser());
     }
 }

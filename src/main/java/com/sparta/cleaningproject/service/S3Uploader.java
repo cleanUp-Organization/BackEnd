@@ -26,6 +26,8 @@ public class S3Uploader {
     private String bucket;
 
     public String upload(MultipartFile multipartFile) throws IOException {
+        //MultipartFile을 전달 받고
+        //S3에 Multipartfile 타입은 전송이 안됩니다.
         File uploadFile = convert(multipartFile)
                 .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
@@ -39,11 +41,15 @@ public class S3Uploader {
         return uploadImageUrl;
     }
 
+//    전환된 File을 S3에 public 읽기 권한으로 put
+//    외부에서 정적 파일을 읽을 수 있도록 하기 위함입니다.
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
+//    로컬에 생성된 File 삭제
+//    Multipartfile -> File로 전환되면서 로컬에 파일 생성된것을 삭제합니다.
     private void removeNewFile(File targetFile) {
         if (targetFile.delete()) {
             log.info("파일이 삭제되었습니다.");
@@ -53,14 +59,13 @@ public class S3Uploader {
     }
 
     private Optional<File> convert(MultipartFile file) throws IOException {
-        File convertFile = new File(Objects.requireNonNull(file.getOriginalFilename()));
-        if(convertFile.createNewFile()) {
-            try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-                fos.write(file.getBytes());
+        File convertFile = new File(Objects.requireNonNull(file.getOriginalFilename()));//파일이 있나없나 검사!
+        if(convertFile.createNewFile()) {//createNewFile로 새로운 파일을 만들어라
+            try (FileOutputStream fos = new FileOutputStream(convertFile)) { //convertFile를 OutputStream으로 만들어라
+                fos.write(file.getBytes());//fos 내부의 바이트 타입의 데이터를 가져와서 저장
             }
-            return Optional.of(convertFile);
+            return Optional.of(convertFile); //Null인지 아닌지 판별
         }
-
-        return Optional.empty();
+        return Optional.empty(); //빈 객체를 반환?
     }
 }
