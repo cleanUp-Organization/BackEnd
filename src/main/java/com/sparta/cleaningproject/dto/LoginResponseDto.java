@@ -1,6 +1,5 @@
 package com.sparta.cleaningproject.dto;
 
-import com.sparta.cleaningproject.jwt.JwtUtil;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,14 @@ public class LoginResponseDto {
         this.msg = msg;
         this.jwtUtil = jwtUtil;
         this.statusCode = statusCode;
+    }
+
+    public static LoginResponseDto of(String  msg , HttpStatus statusCode , String jwtUtil2){
+        return builder()
+                .msg("로그인 성공")
+                .statusCode(HttpStatus.OK)
+                .jwtUtil(jwtUtil2)
+                .build();
     }
 
 }

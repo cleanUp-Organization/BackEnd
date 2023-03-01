@@ -57,11 +57,7 @@ public class UserService {
             role = UserRoleEnum.ADMIN;
         }
 
-        User user = User.builder()
-                .username(username)
-                .password(password)
-                .role(role)
-                .build();
+        User user = User.of(username,password,role);
 
         userRepository.save(user);
 
@@ -83,12 +79,7 @@ public class UserService {
 
         String jwtUtil2 =JwtUtil.AUTHORIZATION_HEADER+" "+jwtUtil.createToken(user.getUsername(), user.getRole());
 
-        return LoginResponseDto.builder()
-                .msg("로그인 성공")
-                .statusCode(HttpStatus.OK)
-                .jwtUtil(jwtUtil2)
-                .build();
-
+        return LoginResponseDto.of("로그인 성공",HttpStatus.OK,jwtUtil2);
     }
 
     @Transactional
