@@ -1,5 +1,6 @@
 package com.sparta.cleaningproject.dto;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

@@ -24,7 +24,7 @@ public class ApiResponse {
     }
 
     public String  checkNullBoardRequestDto(Board board, BoardRequestDto boardRequestDto, String imgUrl) throws IOException {
-        if (boardRequestDto.getImgUrl() == null) {
+        if (boardRequestDto.getImgUrl() == null||boardRequestDto.getImgUrl().isEmpty()) {
             imgUrl = board.getImgUrl();
         } else {
             imgUrl = s3Uploader.upload(boardRequestDto.getImgUrl());
