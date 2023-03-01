@@ -1,6 +1,7 @@
 package com.sparta.cleaningproject.service;
 
 import com.sparta.cleaningproject.dto.LoginRequestDto;
+import com.sparta.cleaningproject.dto.LoginResponseDto;
 import com.sparta.cleaningproject.dto.MessageResponseDto;
 import com.sparta.cleaningproject.dto.UserRequestDto;
 import com.sparta.cleaningproject.entity.User;
@@ -10,6 +11,7 @@ import com.sparta.cleaningproject.jwt.JwtUtil;
 import com.sparta.cleaningproject.repository.BoardRepository;
 import com.sparta.cleaningproject.repository.CommentRepository;
 import com.sparta.cleaningproject.repository.UserRepository;
+import com.sparta.cleaningproject.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 import static com.sparta.cleaningproject.exception.Exception.*;
+import static com.sparta.cleaningproject.response.ResponseMsg.*;
 
 @Service
 @RequiredArgsConstructor
@@ -31,6 +34,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final BoardRepository boardRepository;
     private final CommentRepository commentRepository;
+    private final ApiResponse apiResponse;
 
     @Transactional
     public MessageResponseDto signup(UserRequestDto userRequestDto) {
@@ -61,15 +65,12 @@ public class UserService {
 
         userRepository.save(user);
 
-        return MessageResponseDto.builder()
-                .msg("정상적으로 회원가입이 완료되었습니다")
-                .statusCode(HttpStatus.OK)
-                .build();
+        return apiResponse.success(SIGNUP_SUCCESS.getMsg());
 
     }
 
     @Transactional(readOnly = true)
-    public MessageResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response) {
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 
@@ -80,11 +81,12 @@ public class UserService {
             throw new CustomException(INVALID_PASSWORD);
         }
 
-        response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
+        String jwtUtil2 =JwtUtil.AUTHORIZATION_HEADER+" "+jwtUtil.createToken(user.getUsername(), user.getRole());
 
-        return MessageResponseDto.builder()
+        return LoginResponseDto.builder()
                 .msg("로그인 성공")
                 .statusCode(HttpStatus.OK)
+                .jwtUtil(jwtUtil2)
                 .build();
 
     }
@@ -102,10 +104,7 @@ public class UserService {
 
         userRepository.delete(userCheck);
 
-        return MessageResponseDto.builder()
-                .msg("회원 탈퇴 성공")
-                .statusCode(HttpStatus.OK)
-                .build();
+        return apiResponse.success(WITHDRAWAL_SUCCESS.getMsg());
 
     }
 

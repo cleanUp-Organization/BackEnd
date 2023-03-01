@@ -8,11 +8,14 @@ import com.sparta.cleaningproject.repository.BoardLikesRepository;
 import com.sparta.cleaningproject.repository.BoardRepository;
 import com.sparta.cleaningproject.repository.CommentLikesRepository;
 import com.sparta.cleaningproject.repository.CommentRepository;
+import com.sparta.cleaningproject.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+
+import static com.sparta.cleaningproject.response.ResponseMsg.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +24,7 @@ public class LikesService {
     private final BoardLikesRepository boardLikesRepository;
     private final CommentRepository commentRepository;
     private final CommentLikesRepository commentLikesRepository;
+    private final ApiResponse apiResponse;
 
     @Transactional
     public MessageResponseDto boardLike(User user, Long boardId) {
@@ -34,16 +38,10 @@ public class LikesService {
                     .user(user)
                     .build();
             boardLikesRepository.save(boardLikes);
-            return MessageResponseDto.builder()
-                    .msg("좋아요 성공!")
-                    .statusCode(HttpStatus.OK)
-                    .build();
+            return apiResponse.success(BOARD_LIKE_SUCCESS.getMsg());
         } else {
             boardLikesRepository.delete(boardLikesBoardUser);
-            return MessageResponseDto.builder()
-                    .msg("좋아요 취소 성공!")
-                    .statusCode(HttpStatus.OK)
-                    .build();
+            return apiResponse.success(BOARD_UNLIKE_SUCCESS.getMsg());
         }
     }
     @Transactional
@@ -58,16 +56,10 @@ public class LikesService {
                     .user(user)
                     .build();
             commentLikesRepository.save(commentLikes);
-            return MessageResponseDto.builder()
-                    .msg("댓글 좋아요 성공!")
-                    .statusCode(HttpStatus.OK)
-                    .build();
+            return apiResponse.success(COMMENT_LIKE_SUCCESS.getMsg());
         }else {
             commentLikesRepository.delete(commentLikesCommentUser);
-            return MessageResponseDto.builder()
-                    .msg("댓글 좋아요 취소 성공!")
-                    .statusCode(HttpStatus.OK)
-                    .build();
+            return apiResponse.success(COMMENT_UNLIKE_SUCCESS.getMsg());
         }
     }
 

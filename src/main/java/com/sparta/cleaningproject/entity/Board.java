@@ -54,4 +54,12 @@ public class Board extends Timestamped{
         content = boardRequestDto.getContent();
         this.imgUrl = imgUrl;
     }
+
+    public static Board of(BoardRequestDto boardRequestDto, User user, String imgUrl) {
+        return Board.builder()
+                .boardRequestDto(boardRequestDto)
+                .user(user)
+                .imgUrl(imgUrl)
+                .build();
+    }
 }

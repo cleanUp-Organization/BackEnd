@@ -11,6 +11,7 @@ import java.util.List;
 public class BoardResponseDto {
     private String username;
     private String title;
+    private String content;
     private String imgUrl;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
@@ -22,6 +23,7 @@ public class BoardResponseDto {
         username = board.getUser().getUsername();
         title = board.getTitle();
         imgUrl = board.getImgUrl();
+        content = board.getContent();
         createdAt = board.getCreatedAt();
         likeNum = board.getBoardLikes().size();
         modifiedAt = board.getModifiedAt();

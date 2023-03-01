@@ -4,6 +4,8 @@ import com.sparta.cleaningproject.dto.*;
 import com.sparta.cleaningproject.entity.*;
 import com.sparta.cleaningproject.exception.CustomException;
 import com.sparta.cleaningproject.repository.BoardRepository;
+import com.sparta.cleaningproject.response.ApiResponse;
+import com.sparta.cleaningproject.response.ResponseMsg;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,25 +19,25 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.sparta.cleaningproject.exception.Exception.*;
+import static com.sparta.cleaningproject.response.ResponseMsg.*;
 
 @Service
 @RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
     private final S3Uploader s3Uploader;
+    private final ApiResponse apiResponse;
     @Transactional
-    public MessageResponseDto createBoard(User user, BoardRequestDto boardRequestDto, MultipartFile multipartFile) throws IOException {
-        String imgUrl = s3Uploader.upload(multipartFile);
-        Board board = Board.builder()
-                .boardRequestDto(boardRequestDto)
-                .user(user)
-                .imgUrl(imgUrl)
-                .build();
+    public MessageResponseDto createBoard(User user, BoardRequestDto boardRequestDto) throws IOException {
+        String imgUrl = "";
+        if (boardRequestDto.getImgUrl() == null) {
+             imgUrl = "https://cleaningproject.s3.ap-northeast-2.amazonaws.com/static/%EB%8F%99%EA%B7%B8%EB%9D%BC%EB%AF%B8%20%EC%B2%AD%EC%86%8C.png";
+        } else {
+             imgUrl = s3Uploader.upload(boardRequestDto.getImgUrl());
+        }
+        Board board = Board.of(boardRequestDto, user, imgUrl);
         boardRepository.save(board);
-        return MessageResponseDto.builder()
-                .msg("생성 성공")
-                .statusCode(HttpStatus.OK)
-                .build();
+        return apiResponse.success(CONSTRUCT_SUCCESS.getMsg());
     }
     @Transactional
     public List<BoardCommentResponseDto> getBoards() {
@@ -55,8 +57,8 @@ public class BoardService {
         return boardResponseDto;
     }
     @Transactional
-    public BoardResponseDto getIdBoard(Long id) {
-        Board board = boardRepository.findById(id).orElseThrow(
+    public BoardResponseDto getIdBoard(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
         board.getCommentList().sort(Comparator.comparing(Comment::getCreatedAt).reversed());
@@ -70,33 +72,32 @@ public class BoardService {
                 .build();
     }
     @Transactional
-    public MessageResponseDto update(User user, Long id, BoardRequestDto boardRequestDto, MultipartFile multipartFile) throws IOException {
-        Board board = boardRepository.findById(id).orElseThrow(
+    public MessageResponseDto update(User user, Long boardId, BoardRequestDto boardRequestDto) throws IOException {
+        Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
-        String imgUrl = s3Uploader.upload(multipartFile);
+        String imgUrl = "";
+        if (boardRequestDto.getImgUrl() == null) {
+            imgUrl = "https://cleaningproject.s3.ap-northeast-2.amazonaws.com/static/%EB%8F%99%EA%B7%B8%EB%9D%BC%EB%AF%B8%20%EC%B2%AD%EC%86%8C.png";
+        } else {
+            imgUrl = s3Uploader.upload(boardRequestDto.getImgUrl());
+        }
         if (Objects.equals(user.getId(), board.getUser().getId()) || user.getRole() == UserRoleEnum.ADMIN) {
             board.update(boardRequestDto,imgUrl);
             // 요청받은 DTO 로 DB에 저장할 객체 만들기
-            return MessageResponseDto.builder()
-                    .statusCode(HttpStatus.OK)
-                    .msg("게시글 수정 성공")
-                    .build();
+            return apiResponse.success(BOARD_UPDATE_SUCCESS.getMsg());
         } else {
             throw new CustomException(AUTHORIZATION);
         }
     }
     @Transactional
-    public MessageResponseDto deleteBoard(User user, Long id) {
-        Board board = boardRepository.findById(id).orElseThrow(
+    public MessageResponseDto deleteBoard(User user, Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(
                 () -> new CustomException(NOT_FOUND_BOARD)
         );
         if (Objects.equals(user.getId(), board.getUser().getId()) || user.getRole() == UserRoleEnum.ADMIN) {
-            boardRepository.deleteById(id);
-            return MessageResponseDto.builder()
-                    .msg("게시글 삭제 성공")
-                    .statusCode(HttpStatus.OK)
-                    .build();
+            boardRepository.deleteById(boardId);
+            return apiResponse.success(BOARD_DELETE_SUCCESS.getMsg());
         } else {
             throw new CustomException(AUTHORIZATION);
         }

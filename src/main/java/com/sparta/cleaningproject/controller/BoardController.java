@@ -19,28 +19,27 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BoardController {
     private final BoardService boardService;
-    @PostMapping("/board")
-    public MessageResponseDto createBoard(@RequestPart(value = "imgUrl",required = false) MultipartFile multipartFile
-            ,@RequestPart(value = "boardRequestDto") BoardRequestDto boardRequestDto
+    @PostMapping("/boards")
+    public MessageResponseDto createBoard(@ModelAttribute BoardRequestDto boardRequestDto
             ,@AuthenticationPrincipal UserDetailsImpl userDetails) throws IOException {
-        return boardService.createBoard(userDetails.getUser(), boardRequestDto ,multipartFile);
+        return boardService.createBoard(userDetails.getUser(), boardRequestDto);
     }
     @GetMapping("/boards")
     public List<BoardCommentResponseDto> getBoards() {
         return boardService.getBoards();
     }
 
-    @GetMapping("/board/{id}")
-    public BoardResponseDto getIdBoard(@PathVariable Long id) {
-        return boardService.getIdBoard(id);
+    @GetMapping("/boards/{boardId}")
+    public BoardResponseDto getIdBoard(@PathVariable Long boardId) {
+        return boardService.getIdBoard(boardId);
     }
 
-    @PutMapping("/board/{id}")
-    public MessageResponseDto updateBoard(@RequestPart(value = "imgUrl",required = false) MultipartFile multipartFile ,@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails, @RequestPart BoardRequestDto boardRequestDto) throws IOException {
-        return boardService.update(userDetails.getUser(), id, boardRequestDto,multipartFile);
+    @PutMapping("/boards/{boardId}")
+    public MessageResponseDto updateBoard(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails, @ModelAttribute BoardRequestDto boardRequestDto) throws IOException {
+        return boardService.update(userDetails.getUser(), boardId, boardRequestDto);
     }
-    @DeleteMapping("board/{id}")
-    public MessageResponseDto deleteBoard(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        return boardService.deleteBoard(userDetails.getUser(), id);
+    @DeleteMapping("/boards/{boardId}")
+    public MessageResponseDto deleteBoard(@PathVariable Long boardId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return boardService.deleteBoard(userDetails.getUser(), boardId);
     }
 }
