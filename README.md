@@ -15,36 +15,15 @@ CleanUp은 불필요한 쓰레기 발생을 예방하고, 원활한 배출을 �
 - Mockito
 
 ## 프로젝트 구조
+![image](https://user-images.githubusercontent.com/76714304/222457409-897778e5-d986-489e-987f-0773a6e15c6f.png)
 
-.
-├── main
-│ ├── java
-│ │ └── com.sparta.cleaningproject
-│ │ ├── config
-│ │ ├── controller
-│ │ ├── dto
-│ │ ├── entity
-│ │ ├── enums
-│ │ ├── exceptions
-│ │ ├── repository
-│ │ ├── security
-│ │ ├── service
-│ │ └── CleaningProjectApplication.java
-│ └── resources
-│ ├── application-dev.yml
-│ ├── application-prod.yml
-│ └── application.yml
-└── test
-└── java
-└── com.sparta.cleaningproject
-├── controller
-├── dto
-├── entity
-├── repository
-└── service
+---
 
 ## ERD
 ![화면 캡처 2023-02-27 110435](https://user-images.githubusercontent.com/95588392/221455174-e75defee-8f5d-48d5-acaa-2ba700b47fdb.png)
+
+## API 명세서
+![image](https://user-images.githubusercontent.com/76714304/222444968-69a3d17b-cb7a-4361-8bcd-2fc1e4c8a1c6.png)
 
 ## 프로젝트 API구현 요소
 
@@ -80,9 +59,16 @@ CleanUp은 불필요한 쓰레기 발생을 예방하고, 원활한 배출을 �
 ---
 
 ## Trouble Shooting
-
+1. MultipartFile Request 오류
+    - 프론트와 맞춰보는 도중 MultipartFile 을 전달받을때 기존 @RequestPart 를 이용해서 json 객체와 MultipartFile 을 따로 받았었는데 depth 차이로 인해 전달받지 못한다는 피드벡을 받았습니다.
+    - 해결 : MultipartFile 도 dto에 넣어 @ModelAttribute 로 한번에 받았습니다.
+ 
+2. API명세서의 중요성
+    - 보통 백엔드가 먼저 작업을 하고 프론트가 진행하게 되지만 같이 진행하면서 api명세서가 수시로 바뀌게 되어 소통 과정의 오류가 생겼습니다.
+    - 해결 : 많은 소통을 통한 정확한 API 명세서 작성 및 수정 시 다시 소통
 -----
-## API 명세서
-![image](https://user-images.githubusercontent.com/76714304/222444968-69a3d17b-cb7a-4361-8bcd-2fc1e4c8a1c6.png)
 
-##
+## Contributors
+- [오세영](https://github.com/osy9536)
+- [김근호](https://github.com/GEUNHOKIM)
+- [이건호](https://github.com/Kuno1734)
